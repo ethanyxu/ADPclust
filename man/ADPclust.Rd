@@ -110,4 +110,11 @@ ans <- adpclust(clust5, centroids = "auto", htype = "ROT", nclust = 3:5)
 summary(ans)
 plot(ans)
 }
+\references{
+\itemize{
+\item{GitHub: \url{https://github.com/ethanyxu/ADPclust}}
+\item{Xiao-Feng Wang, and Yifan Xu, (2015) "Fast Clustering Using Adaptive Density Peak Detection." Statistical Methods in Medical Research, doi:10.1177/0962280215609948. }
+\item{PubMed: \url{http://www.ncbi.nlm.nih.gov/pubmed/26475830}}
+}
+}
 

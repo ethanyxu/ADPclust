@@ -5,6 +5,9 @@
 ##' the bandwidth. Two approaches are mathematically equivalent.
 ##'
 ##' @title AMISE bandwidth
+##' 
+##' @export
+##' 
 ##' @param x the number of variables (if y is missing), or a data frame or a matrix (if y is not missing).
 ##' @param y the number of observations. If y is missing, x should be the data matrix.
 ##' @return AMISE bandwidth.

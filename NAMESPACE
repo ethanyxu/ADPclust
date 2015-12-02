@@ -2,6 +2,8 @@
 
 S3method(plot,adpclust)
 S3method(summary,adpclust)
+export(AMISE)
+export(ROT)
 export(adpclust)
 import(cluster)
 import(dplyr)

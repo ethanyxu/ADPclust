@@ -1,0 +1,13 @@
+citHeader("To cite ADPclust in publications use:")
+
+citEntry(entry = "Article",
+  title        = "Fast Clustering Using Adaptive Density Peak Detection",
+  author       = personList(as.person("Xiao-Feng Wang"),
+                   as.person("Yifan Xu")),
+  journal      = "Statistical Methods in Medical Research",
+  year         = "2015",
+  pages        = "0962280215609948",
+  url          = "http://www.ncbi.nlm.nih.gov/pubmed/26475830",
+
+  textVersion  = "Wang, Xiao-Feng, and Yifan Xu. \"Fast clustering using adaptive density peak detection.\" Statistical methods in medical research (2015): 0962280215609948."
+)
