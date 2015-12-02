@@ -29,7 +29,7 @@ library(ADPclust)
 ```
 
 # Simple Examples
-Run on a preloaded data sets:
+Run on a preloaded data set:
 ```R
 library(ADPclust)
 data(clust3)
