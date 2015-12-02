@@ -3,15 +3,29 @@ Type: Package
 Title: Fast Clustering Using Adaptive Density Peak Detection
 Version: 0.6.5
 Authors@R: c(person("Yifan \"Ethan\"", "Xu", email = "ethan.yifanxu@gmail.com", role = c("aut","cre")), person("Xiao-Feng", "Wang", email = "wangx6@ccf.org", role = "aut"))
-Description: An implementation of ADPclust clustering procedures (Fast Clustering Using Adaptive Density Peak Detection). The work is built and improved upon Rodriguez and Laio[2014]'s idea. ADPclust clusters data by finding density peaks in a density-distance plot generated from local multivariate Gaussian density estimation. It includes an automatic centroids selection and parameter optimization algorithm, which finds the number of clusters and cluster centroids by comparing average silhouettes on a grid of testing clustering results; It also includes an user interactive algorithm that allows the user to manually selects cluster centroids from a two dimensional "density-distance plot".  
-Depends: 
+Description: An implementation of ADPclust clustering procedures (Fast
+    Clustering Using Adaptive Density Peak Detection). The work is built and
+    improved upon Rodriguez and Laio[2014]'s idea. ADPclust clusters data by finding
+    density peaks in a density-distance plot generated from local multivariate
+    Gaussian density estimation. It includes an automatic centroids selection and
+    parameter optimization algorithm, which finds the number of clusters and cluster
+    centroids by comparing average silhouettes on a grid of testing clustering
+    results; It also includes an user interactive algorithm that allows the user
+    to manually selects cluster centroids from a two dimensional "density-distance
+    plot".
+Depends:
     R (>= 3.0.0),
-Imports: 
-	 dplyr, cluster, fields, knitr
+Imports:
+    dplyr,
+    cluster,
+    fields,
+    knitr
 URL: https://github.com/ethanyxu/ADPclust
 BugReports: https://github.com/ethanyxu/ADPclust/issues
 VignetteBuilder: knitr
 License: GPL(>=2)
 LazyData: true
-Suggests: knitr,
+Suggests:
+    knitr,
     rmarkdown
+RoxygenNote: 5.0.1
