@@ -1,10 +1,8 @@
-#' @title User-interactive Finding Clusters
-#' 
-#' This function uses f and delta (calculated from findRd()) to
-#' find clusters.
-#' 
-#' @details findCluster() plots f vs. delta plot, then allows user to select
+#' Uses f and delta (calculated from findRd()) to find clusters.
+#'
+#' findCluster() plots f vs. delta plot, then allows user to select
 #' centers of clusters and outliers. 
+#' @title User-interactive Finding Clusters 
 #' 
 #' @param x a list. Return value from findRd2(). The list contains "f", "delta",
 #' "dat", and "distm".

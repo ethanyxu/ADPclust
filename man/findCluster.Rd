@@ -2,10 +2,7 @@
 % Please edit documentation in R/findCluster.R
 \name{findCluster}
 \alias{findCluster}
-\title{User-interactive Finding Clusters
-
-This function uses f and delta (calculated from findRd()) to
-find clusters.}
+\title{User-interactive Finding Clusters}
 \usage{
 findCluster(x, mycols = NULL)
 }
@@ -26,6 +23,9 @@ a list of the following items:
 \item score: silouette of the clustering result.
 \item h: bandwith h.
 }
+}
+\description{
+Uses f and delta (calculated from findRd()) to find clusters.
 }
 \details{
 findCluster() plots f vs. delta plot, then allows user to select

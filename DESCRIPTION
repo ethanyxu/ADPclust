@@ -26,6 +26,5 @@ VignetteBuilder: knitr
 License: GPL(>=2)
 LazyData: true
 Suggests:
-    knitr,
     rmarkdown
 RoxygenNote: 5.0.1
