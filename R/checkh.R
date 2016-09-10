@@ -1,14 +1,22 @@
-##------------------------
-## Calculate h for multivariate method
-##------------------------
+##' Calculate bandwidth h using various methods.
+##'
+##' @title Calculate Bandwidth h
+##' @param dat 
+##' @param h 
+##' @param fdelta 
+##' @param htype 
+##' @param centroids 
+##' @return 
+
 checkh <- function(dat, h, fdelta, htype, centroids){
     n <- nrow(dat)
     p <- ncol(dat)
 
     if(centroids == "user"){
-###################
-## user
-###################
+        #---------------------
+        # user
+        #---------------------
+
         if(is.null(h)){
             if(fdelta == "mnorm"){
                 if(htype == "AMISE"){
@@ -33,9 +41,9 @@ checkh <- function(dat, h, fdelta, htype, centroids){
             }
         }
     }else if(centroids == "auto"){
-###################
-## auto
-###################
+        #---------------------
+        # auto
+        #---------------------
         if(is.null(h)){
             if(fdelta == "mnorm"){
                 if(htype == "AMISE"){
@@ -64,77 +72,5 @@ checkh <- function(dat, h, fdelta, htype, centroids){
         }
     }else
         stop("centroids only takes two options: 'user' or 'auto'.")
-    
-    ## if(!is.null(h)){
-    ##     ##--------
-    ##     ## h != NULL
-    ##     ##--------    
-    ##     if(h == "AMISE"){
-    ##         if(fdelta == "mnorm"){
-    ##             htype <- "AMISE"
-    ##             h <- (4 / (p + 2)) ^ (1 / (p + 4)) * n ^ (-1 / (p + 4)) ## wand's AMISE
-    ##         }else{
-    ##             stop("h = 'AMISE' does not make sense if fdelta != 'mnorm'.")
-    ##         }
-    ##     }else if(h == "ROT"){
-    ##         if(fdelta == "mnorm"){
-    ##             htype <- "ROT"
-    ##             h <- n ^ (-1 / (p + 4)) ## Scott's ROT
-    ##         }else{
-    ##             stop("h = 'ROT' does not make sense if fdelta != 'mnorm'.")
-    ##         }
-    ##     }else if(is.numeric(h) && h > 0){
-    ##         ## good
-    ##         htype <- "Specified"
-    ##     }else{
-    ##         stop("Please provide a nonnegative h value, or specify h = 'ROT' or h = 'AMISE'. If h is NULL, adpclust will attempt to find an h.")
-    ##     }
-    ## }else{
-    ##     ##--------
-    ##     ## h == NULL
-    ##     ##--------
-    ##     if(centroids == "user"){
-    ##         if(fdelta == "mnorm"){
-    ##             htype <- "AMISE"
-    ##             h <- (4 / (p + 2)) ^ (1 / (p + 4)) * n ^ (-1 / (p + 4)) ## wand's AMISE
-    ##             cat("\nBandwidth h not provided; Using AMISE value: h =", h, ".\n")
-    ##         }else{
-    ##             stop("For centroids == 'user', please provide a nonnegative h value. OR: if fdelta = 'mnorm', you can specify h = 'ROT' or h = 'AMISE'.")
-    ##         }
-    ##     }else{
-    ##         ## fine
-    ##     }
-    ## }
     return(list(h = h, htype = htype))
 }
-
-##     ##------------------------
-##     ## Define nclust in automatic variation if not given
-##     ##------------------------
-##     if(centroids == "auto" & is.null(nclust)) nclust = 2:10
-    
-##     ## This following function finds f and delta, given h
-##     ## If h is missing then it is automatically found by highest silhouette.
-##     if(centroids == "user" && fdelta == "mnorm"){
-##         if(is.numeric(htype) && htype > 0)
-##             temp.type <- "Given"
-##         else if(h == "AMISE")
-##             temp.type <- "AMISE"
-##         else if(h == "ROT")
-##             temp.type <- "ROT"
-##         else
-##             stop("'centroids is set to 'user'; Please provide a nonnegative h value, or specify h = 'ROT' or h = 'AMISE'.")
-        
-##         if(temp.type == "AMISE"){
-##             h <- (4 / (p + 2)) ^ (1 / (p + 4)) * n ^ (-1 / (p + 4)) ## wand's AMISE
-##         }else if(temp.type == "ROT"){
-##             h <- n ^ (-1 / (p + 4)) ## Scott's ROT
-##         }else{}
-        
-##         htype <- temp.type
-##         fd.res <- findRd2(dat, h = h, plot = FALSE, dmethod = dmethod, htype = htype, 
-##                           fdelta = fdelta, nclust = nclust)
-##     }else if(centroids == "auto"){
-        
-##     }
-## }

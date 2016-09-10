@@ -72,9 +72,8 @@ findFd <- function(dat, h = NULL,
             f1 <- rank(f, ties.method = "first") # Break ties in f
             delta <- apply(distm / outer(f1, f1, FUN = ">"), 2, min, na.rm = TRUE)
             loc.max <- which.max(delta)
-            delta[loc.max] <- max(delta[-loc.max]) # Equation in the Matlab cqode
+            delta[loc.max] <- max(delta[-loc.max]) # Equation in the Matlab code
         }else if(fdelta == "mnorm"){
-            time1 <- Sys.time()
             f.order <- order(f, decreasing = TRUE)
             delta <- rep(NA, n)
             delta[f.order[1]] <- Inf
@@ -82,25 +81,10 @@ findFd <- function(dat, h = NULL,
                 delta[f.order[i]] <- min(distm[f.order[i], f.order[1:(i - 1)]])
             }
             delta[f.order[1]] <- max(delta[-f.order[1]])
-            
-            ## time2 <- Sys.time()
-            ## frank <- rank(f, ties.method = "random")
-            ## delta <- rep(NA, n)
-            ## for(i in 1:n){
-            ##     delta[i] <- min(distm.std[i, frank > frank[i]])
-            ## }
-            
-            ## time3 <- Sys.time()
-            ## delta <- apply(distm.std / outer(f, f, FUN = ">"), 2, min, na.rm = TRUE)
-            
-            ## time4 <- Sys.time()
-            ## cat("loops uses", time2 - time1,
-            ##     "loops2 uses", time3 - time2,
-            ##     "apply uses", time4 - time3, "\n")
         }else{
             delta <- apply(distm / outer(f, f, FUN = ">"), 2, min, na.rm = TRUE)
             loc.max <- which.max(delta)
-            delta[loc.max] <- max(delta[-loc.max]) # Equation in the Matlab cqode
+            delta[loc.max] <- max(delta[-loc.max]) # Equation in the Matlab code
         }
         if(verbose) cat("Done.\n")
         return(list(f = f, delta = delta))
@@ -114,7 +98,6 @@ findFd <- function(dat, h = NULL,
             if(fdelta != "mnorm")
                 stop("h must be a nonnegative number.")
             else{
-                browser()
                 if(htype == "AMISE")
                     h <- AMISE(p, n)
                 else if(htype == "ROT")

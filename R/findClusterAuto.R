@@ -7,7 +7,7 @@
 #' the points whose rho's are greater than 10th percentile. 
 #' @param x a list. Return value from findRd(). The list contains "f", "delta",
 #' "dat", and "distm".
-#' @param nclust a number. Number of clusters.
+#' @param nclust vector of number of clusters. 
 #' @param ac an integer indicating which automatic cut method is used. Currently take two values:
 #' \itemize{
 #' \item{ac = 1: }{in the f vs. delta decision plot, 'nclust' points with f > percentile f.cut and nclust largest delta's are declaired centroids.}
@@ -44,7 +44,7 @@ findClusterAuto <- function(x,
     ## Color scheme
     ##------------------------------------
     if(is.null(mycols)) mycols <- defCol()
-    h <- x$h; dat <- x$dat
+    h <- x$h; 
     
     ##------------------------------------
     ## Find centers
@@ -52,10 +52,10 @@ findClusterAuto <- function(x,
     if(ac == 1){
         centers <- array(list(NULL), c(length(h), length(nclust), length(f.cut)),
                          dimnames = list(h = round(h,2), nclust = nclust, fCut = f.cut))
-        for(i in 1:length(h)){
+        for(i in 1:length(h)){ # For each h
             f <- x$fd[[i]]$f
             delta <- x$fd[[i]]$delta
-            for(k in 1:length(f.cut)){
+            for(k in 1:length(f.cut)){ # For each f.cuts
                 ##f0 <- min(f) + f.cut[j] * (max(f) - min(f))
                 f0 <- quantile(f, probs = f.cut[k])
                 delta1 <- delta
@@ -74,8 +74,7 @@ findClusterAuto <- function(x,
             delta <- x$fd[[i]]$delta
             x1 <- min(f); y1 <- max(delta)
             x2 <- max(f); y2 <- min(delta)
-            pl.dist <- ((x2 - x1) * delta - (y2 - y1) * f + y2 * x1 - x2 * y1) /
-                sqrt((y2 - y1) ^ 2 + (x2 - x1) ^ 2)
+            pl.dist <- ((x2 - x1) * delta - (y2 - y1) * f + y2 * x1 - x2 * y1) / sqrt((y2 - y1) ^ 2 + (x2 - x1) ^ 2)
             cts <- order(pl.dist, decreasing = TRUE)[1:max(nclust)]
             for(j in 1:length(nclust)){
                 centers[[i, j]] <- cts[1:nclust[j]]

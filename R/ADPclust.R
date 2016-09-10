@@ -104,23 +104,28 @@ adpclust <- function(dat,
                      dmethod = "euclidean",
                      verbose = FALSE,
                      draw = TRUE,
-                     findSil = TRUE)
-{
+                     findSil = TRUE){
 
     ##---------------
     ## Set bandwidth 'h', and number of clusters 'nclust'
     ##---------------
-    if(verbose) cat("Checking h\n")
+    if(verbose){
+        cat("Checking h\n")  
+    } 
+
     h.res <- checkh(dat, h, fdelta, htype, centroids)
     h <- h.res$h
-    if(!is.null(h.res$htype)) htype <- h.res$htype
-    if(verbose) cat("h takes:", length(h),"values\n")
+
+    if(!is.null(h.res$htype)) {
+        htype <- h.res$htype   
+    }
+    if(verbose) {
+        cat("h takes:", length(h),"values\n")   
+    }
 
     ##---------------
     ## Find local density 'f', and sparsity score 'delta'
     ##---------------
-    ## fd.res <- findRd2(dat, h = h, plot = FALSE, dmethod = dmethod, htype = htype, 
-    ##                   fdelta = fdelta, nclust = nclust)
     fd.res <- findFd(dat, h = h, dmethod = dmethod,
                      htype = htype, fdelta = fdelta, verbose = verbose)
 

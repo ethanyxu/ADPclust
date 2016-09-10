@@ -4,7 +4,7 @@
 #' centers of clusters and outliers. 
 #' @title User-interactive Finding Clusters 
 #' 
-#' @param x a list. Return value from findRd2(). The list contains "f", "delta",
+#' @param x a list. Return value from findRd(). The list contains "f", "delta",
 #' "dat", and "distm".
 #' @param mycols a vector of character string. Colors to be used to distinguish
 #' different cluster.
@@ -32,7 +32,6 @@ findCluster <- function(x, mycols = NULL)
 
     f <- x$fd[[1]]$f
     delta <- x$fd[[1]]$delta
-    dat <- x$dat
     distm <- x$distm
     
     ##------------------------------------
@@ -52,14 +51,9 @@ findCluster <- function(x, mycols = NULL)
          xright = frange[1] + 0.7 * (frange[2] - frange[1]),
          ytop = drange[1] + 0.6 * (drange[2] - drange[1]), col = "white")
     text(mean(frange), mean(drange), labels = "Selection Finished.")
-         
+    
     if(length(centers) < 2) stop("Select at least two centers.")
-    ## ioutliers <- pickOutlier(f, delta, col = "black") # indices of centers
-    ## Mark selected points
-    ## noutlier <- length(ioutliers)
-    ## res$outlier <- rep(FALSE, length(f))
-    ## res$outlier[ioutliers] <- TRUE
-
+    
     ##------------------------------------
     ## Assign pts to clusters
     ##------------------------------------
@@ -68,20 +62,6 @@ findCluster <- function(x, mycols = NULL)
     cluster <- apply(dist.to.c, 1, FUN = which.min)
     score <- mean(silhouette(cluster, x$distm)[,3])
     
-    ## dist.to.c <- rdist(dat, dat[centers, ]) # length(dat) by length(centers) distance matrix.
-    ## score <- intCriteria(traj = as.matrix(dat), part = res$cluster, crit = "Silhouette")[[1]]
-
-    ##------------------------------------
-    ## Find borders and cores (!halos)
-    ##------------------------------------
-    ## Find borders.
-    ## distm.diffc <- distm / outer(res$cluster, res$cluster, FUN = "!=")
-    ## res$on.border <- apply(distm.diffc, 2, min, na.rm = TRUE) < x$h
-    ## ## Find cluster cores
-    ## f1 <- f 
-    ## f1[!res$on.border] <- -Inf # replacing !on.border values in f by -Inf
-    ## res$core <- f > ave(f1, res$cluster, FUN = max)
-
     ##------------------------------------
     ## Return answers
     ##------------------------------------
