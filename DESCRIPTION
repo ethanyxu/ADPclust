@@ -1,7 +1,7 @@
 Package: ADPclust
 Type: Package
 Title: Fast Clustering Using Adaptive Density Peak Detection
-Version: 0.6.5
+Version: 0.7
 Authors@R: c(person("Yifan \"Ethan\"", "Xu", email = "ethan.yifanxu@gmail.com", role = c("aut","cre")), person("Xiao-Feng", "Wang", email = "wangx6@ccf.org", role = "aut"))
 Description: An implementation of ADPclust clustering procedures (Fast
     Clustering Using Adaptive Density Peak Detection). The work is built and
@@ -26,5 +26,6 @@ VignetteBuilder: knitr
 License: GPL(>=2)
 LazyData: true
 Suggests:
-    rmarkdown
+    rmarkdown,
+    testthat
 RoxygenNote: 5.0.1

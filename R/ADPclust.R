@@ -8,39 +8,38 @@
 ##'
 ##' When centroids = 'user', the decision plot is generated and displayed on screen. The user selects centroids by clicking the points on the upper right corner of the decision plot. A right click or ESC ends the selection.
 ##'
-##' @param dat numeric data frame where rows are observations and columns are variables.
+##' @param x numeric data frame where rows are observations and columns are variables.
+##' @param distm distance matrix of class 'dist'. Ignored if x is given.
+##' @param p number of variables (ncol(x)). Ignored if x is given.
+##' @param centroids character string specifying "user" or "auto" selection of cluster centroids.
 ##' @param h nonnegative number specifying the bandwidth in density estimation NULL (default). If h is NULL, the algorithm will attempt to find h in a neighborhood centered at either the AMISE bandwidth or ROT bandwidth (see htype).
 ##' @param htype character string specifying the method used to calculate a reference bandwidth for the density estimation. 'htype' is ignored if h is not NULL. Currently the two possible choices of 'htype' are "ROT" and "AMISE" (see details).
 ##' @param nclust integer, or integer vector specifying the pool of the number of clusters in automatic variation. Default is 2:10.
-##' @param centroids character string specifying "user" or "auto" selection of cluster centroids.
 ##' @param ac integer indicating which automatic cut method is used. Currently it takes one of two values:
 ##' \itemize{
 ##' \item{ac = 1: }{in the f vs. delta decision plot, 'nclust' points with f > percentile f.cut and nclust largest delta's are declaired centroids.}
 ##' \item{ac = 2: }{in the f vs. delta decision plot, denote by l the diagonal line connecting the point with smallest f and largest delta, and the point with largest f and smallest delta. 'nclust' points that are above l, and have are farthest away from l are declared centroids.}
 ##' }
 ##' @param f.cut number between (0, 1) or numeric vector of numbers between (0,1). f.cut is used in centroids = "auto" to automatically select cluster centroids from the decision plot. Points with f(x) > f.cut and high delta(x) are selected as one set of candidate centroids (see details). Default = c(0.1, 0.2, 0.3).
-##' @param dmethod character string describing distance measures used in dist() to calculate proximity matrix of dat. This is passed to the argument "method" in dist(). Default = "euclidean"
-##' @param mycols a vector of character strings specifying colors used to distinguish different cluster. If the number of clusters is larger than length(mycols) then mycols is recycled. The default is NULL, then 9 colors from brewer.pal-Set1 are used. 
 ##' @param fdelta character string that specifies the method to estimate densities at each data point. The default (recommended) is "mnorm": multivariate Gaussian density estimation. Other options include
 ##' \itemize{
-##' \item{normkernel}{(f <- 1/(h * sqrt(2 * pi)) * rowSums(exp(-(distm/h)^2/2))); Univariate Gaussian smoother}
+##' \item{unorm}{(f <- 1/(h * sqrt(2 * pi)) * rowSums(exp(-(distm/h)^2/2))); Univariate Gaussian smoother}
 ##' \item{weighted}{(rho <- rowSums(exp(-(distm/h)^2))); Univariate weighted smoother}
 ##' \item{count}{(rho <- rowSums(distm < h) - 1); Histogram estimator (used in Rodriguez [2014])}
 ##' }
+##' @param dmethod character string describing distance measures used in dist() to calculate proximity matrix of dat. This is passed to the argument "method" in dist(). Default = "euclidean"
 ##' @param verbose if TRUE progress will be displayed.
 ##' @param draw if TRUE results will be plotted on screen. Same as plot.adpclust(ans), where 'ans' is the outcome of 'adpclust()'
-##' @param findSil if FALSE silhouette score is NOT calculated, and the field that stores silhouette is set to -Inf. The default is TRUE. This argument is IGNORED if length(h) == 0 or length(h) > 1 or length(nclust) > 1, as silhouette scores are needed to select the best clustering in these cases.
 ##' @return An 'adpclust' object, which contains the list of the following items.
 ##' \itemize{
-##' \item{f:}{ Final density values (f) for each data point.}
-##' \item{delta:}{ Final delta values for each data point.}
-##' \item{icenters:}{ Indices of the clustering centers.}
 ##' \item{clusters}{ Cluster assignments.}
-##' \item{score:}{ Silhouette scores.}
-##' \item{cut.type:}{ Type of cut used in the automatic variation (see 'ac' argument).}
-##' \item{cutvalue:}{ The final best cut value.}
-##' \item{h:}{ Best bandwidth.}
-##' \item{hs:}{ Bandwidths tried in the automatic selection of bandwidth.}
+##' \item{centers:}{ Indices of the clustering centers.}
+##' \item{silhouette:}{ Silhouette score.}
+##' \item{nclust:}{ Number of clusters.}
+##' \item{h:}{ Final bandwidth.}
+##' \item{f:}{ Final density vector f(x) for each data point.}
+##' \item{delta:}{ Final delta vector delta(x) for each data point.}
+##' \item{selection.type:}{ 'user' or 'auto'}
 ##' }
 ##'
 ##' @references 
@@ -50,138 +49,162 @@
 ##' \item{PubMed: \url{http://www.ncbi.nlm.nih.gov/pubmed/26475830}}
 ##' }
 ##' @export
-##' 
-##' @examples
-##' ## Load a data set with 3 clusters
+##' @examples 
+##' # Load a data set with 3 clusters
 ##' data(clust3)
 ##' 
-##' ## Automatically select cluster centroids
+##' # Automatically select cluster centroids
 ##' ans <- adpclust(clust3, centroids = "auto", draw = FALSE)
 ##' summary(ans)
 ##' plot(ans)
 ##'
-##' ## Specify the grid of h and nclust
+##' # Specify distm instead of data
+##' distm <- FindDistm(clust3, normalize = TRUE)
+##' ans.distm <- adpclust(distm = distm, p = 2, centroids = "auto", draw = FALSE)
+##' identical(ans, ans.distm)
+##' 
+##' # Specify the grid of h and nclust
 ##' ans <- adpclust(clust3, centroids = "auto", h = c(0.1, 0.2, 0.3), nclust = 2:6)
 ##'
-##' ## Specify that bandwidths should be searched around
-##' ## Wand's Asymptotic-Mean-Integrated-Squared-Error bandwidth
-##' ## Also test 3 to 6 clusters.
+##' # Specify that bandwidths should be searched around
+##' # Wand's Asymptotic-Mean-Integrated-Squared-Error bandwidth
+##' # Also test 3 to 6 clusters.
 ##' ans <- adpclust(clust3, centroids = "auto", htype = "AMISE", nclust = 3:6)
 ##' 
-##' ## Set a specific bandwidth value.
+##' # Set a specific bandwidth value.
 ##' ans <- adpclust(clust3, centroids = "auto", h = 5)
 ##'
-##' ## Change method of automatic selection of centers
+##' # Change method of automatic selection of centers
 ##' ans <- adpclust(clust3, centroids = "auto", nclust = 2:6, ac = 2)
 ##' 
-##' ## Specify that the single "ROT" bandwidth value by
-##' ## using the 'ROT()' function
+##' # Specify that the single "ROT" bandwidth value by
+##' # using the 'ROT()' function
 ##' ans <- adpclust(clust3, centroids = "auto", h = ROT(clust3))
 ##'
-##' ## Set single h and nclust. Do not calculate silhouette to speed things up
-##' ans <- adpclust(clust3, centroids = "auto", h = ROT(clust3), nclust = 3, findSil = FALSE)
-##' 
-##' ## Centroids selected by user
+##' # Centroids selected by user
 ##' \dontrun{
 ##' ans <- adpclust(clust3, centroids = "user", h = ROT(clust3))
 ##' }
 ##'
-##' ## A larger data set
+##' # A larger data set
 ##' data(clust5)
 ##' ans <- adpclust(clust5, centroids = "auto", htype = "ROT", nclust = 3:5)
 ##' summary(ans)
 ##' plot(ans)
 
-adpclust <- function(dat,
-                     h = NULL,
-                     htype = "AMISE",
-                     nclust = 2:10,
-                     centroids = "auto",
-                     ac = 1, 
-                     f.cut = 0.1,
-                     fdelta = "mnorm",
-                     mycols = NULL,
-                     dmethod = "euclidean",
+adpclust <- function(x = NULL, # data matrix
+                     distm = NULL, # distance matrix. ignored if x is given
+                     p = NULL, # ignored if x is given
+                     centroids = 'auto', # [user, auto]
+                     h = NULL, # bandwidth
+                     htype = 'amise', # [amise, rot] methods to calculate h (ignored if h is not null)
+                     nclust = 2:10, # number of clusters
+                     ac = 1, # [1,2] automatic cutting method
+                     f.cut = c(0.1, 0.2, 0.3), # cutting percentile for cutting method 1. ignored if ac == 2
+                     fdelta = 'mnorm', # [mnorm, unorm, weighted, count] methods to calculate fdelta
+                     dmethod = 'euclidean', # methods to calculate distance matrix. ignored if distm != null.
                      verbose = FALSE,
-                     draw = TRUE,
-                     findSil = TRUE){
-
-    ##---------------
-    ## Set bandwidth 'h', and number of clusters 'nclust'
-    ##---------------
-    if(verbose){
-        cat("Checking h\n")  
+                     draw = FALSE
+                     ){
+    # -------------------------------------------------------------------------
+    # Check arguments
+    # -------------------------------------------------------------------------    
+    if(!centroids %in% c('user', 'auto')){
+        stop('arg centroids must be one of c(\'user\', \'auto\') Got ', centroids)  
+    }
+    if(!is.null(h)){
+        if(!is.numeric(h)) stop('arg h must be numeric. Got ', class(h))
+        if(length(h) == 0) stop('arg h is empty: ', h)    
+        if(min(h) <= 0) stop('arg h must be nonnegative. Got', h)
+    }    
+    if(!tolower(htype) %in% c('amise', 'rot')){
+        stop('arg centroids must be one of c(\'amise\', \'rot\') Got ', htype)  
+    }
+    if(!all(nclust == floor(nclust))) stop('arg nclust must all be integers. Got ', nclust)
+    if(min(nclust) <= 1) stop('arg nclust must be integers > 1. Got ', nclust)
+    if(!ac %in% c(1,2)) stop('arg ac must be one of c(1,2). Got ', ac)
+    if(!is.numeric(f.cut)) stop('arg f.cut must be numeric. Got ', class(f.cut))
+    if(length(f.cut) == 0) stop('arg f.cut is empty: ', f.cut)
+    if(min(f.cut) < 0) stop('arg f.cut must be between 0 - 1. Got', f.cut)
+    if(max(f.cut) >= 1) stop('arg f.cut must be between 0 - 1. Got', f.cut)    
+    if(!fdelta %in% c('mnorm', 'unorm', 'weighted', 'count')){
+        stop('arg fdelta must be one of c(\'mnorm\', \'unorm\', \'weighted\', \'count\'). Got ', fdelta)        
     } 
-
-    h.res <- checkh(dat, h, fdelta, htype, centroids)
-    h <- h.res$h
-
-    if(!is.null(h.res$htype)) {
-        htype <- h.res$htype   
-    }
-    if(verbose) {
-        cat("h takes:", length(h),"values\n")   
-    }
-
-    ##---------------
-    ## Find local density 'f', and sparsity score 'delta'
-    ##---------------
-    fd.res <- findFd(dat, h = h, dmethod = dmethod,
-                     htype = htype, fdelta = fdelta, verbose = verbose)
-
-    ##---------------
-    ## Find clustering results 
-    ##---------------
-    if(centroids == "user"){
-        ## Manual selection of cluster centroids. Invoke 'findCluster' algorithm
-        ans <- findCluster(fd.res, mycols = mycols)
-    }else if(centroids == "auto"){
-        ## Find silhouette?
-        findSil <- !(length(h) == 1 & length(nclust) == 1 & findSil == FALSE)
-        ## Automatic selection of cluster centroids. Invoke 'findClusterAuto' algorithm
-        ans <- findClusterAuto(fd.res, nclust = nclust, ac = ac,
-                               mycols = mycols, f.cut = f.cut,
-                               verbose = verbose, findSil = findSil)
+    if(is.null(x)){
+        # Use distm
+        if(is.null(distm)) stop("Must provide one of x or distm")
+        if(!inherits(distm, 'dist')) stop("arg distm must inherit dist class. Got ", class(distm))
+        if(is.null(p) && is.null(h)){
+            stop("Bandwidth h and data x are not given. Must provide p to calculate h.")
+        }
     }else{
-        stop("Wrong value for the 'centroids' argument. Valid options are: 'user' or 'auto'.")
+        # Use x. Calculate distm.
+        if(fdelta == "mnorm"){
+            distm <- FindDistm(x, normalize = TRUE, method = "euclidean")
+        }else{
+            distm <- FindDistm(x, normalize = FALSE, method = dmethod)
+        }
+        p = ncol(x)
     }
     
-    if(ncol(dat) > 2) pc2 <- prcomp(dat)$x[,c(1,2)]
-    else pc2 <- dat
+    # -------------------------------------------------------------------------
+    # Find bandwidth h
+    # -------------------------------------------------------------------------    
+    if(is.null(h)){
+        if(fdelta != "mnorm"){
+            stop("Must give h unless fdelta == 'mnorm'")
+        }
+        h <- FindH(p, attr(distm, 'Size'), htype)
+    }
 
-    ##---------------
-    ## Generate return object
-    ##---------------
-    final <- list()
-    final$dat <- pc2
-    attr(final$dat, "type") <- ifelse(ncol(dat) > 2, "pc", "original")
-    attr(final$dat, "p") <- ncol(dat)
-    attr(final$dat, "n") <- nrow(dat)
-    final$testPars <- list()
-    final$testPars$hs <- h
-    if(centroids == "auto")
-        final$testPars$nclusts <- nclust
-    else
-        final$testPars$nclusts <- ans$nclust
-    final$testPars$hs.scores <- ans$hs.scores
-    final$testPars$nclustScores <- ans$nclustScores    
-    final$testPars$f.cut <- ans$f.cut
-    final$testPars$centroids <- centroids
-    final$testPars$fdelta <- fdelta
-    final$testPars$htype <- htype
-    final$f <- fd.res$fd[[ifelse(centroids == "auto", ans$h.id, 1)]]$f
-    attributes(final$f) <- NULL
-    final$delta <-  fd.res$fd[[ifelse(centroids == "auto", ans$h.id, 1)]]$delta
-    final$score <- ans$score
-    final$cluster <- ans$cluster
-    final$centers <- ans$centers; attributes(final$centers) <- NULL
-    final$h <- ans$h
-    final$k <- ans$nclust
+    # -------------------------------------------------------------------------    
+    # Clustering with ‘user’ option
+    # -------------------------------------------------------------------------    
+    if(centroids == "user"){
+        if(length(h) > 1){
+            stop("h must be a scalar when centroids == 'user'")
+        }
+        fd <- FindFD(distm, h, fdelta)
+        ans <- FindClustersManual(distm, fd$f, fd$delta)
+        ans[['h']] <- h
+        ans[['f']] <- fd[['f']]
+        ans[['delta']] <- fd[['delta']]
+        ans[['selection.type']] <- 'user'
+        class(ans) <- c("adpclust", "list")
+        if(draw) plot.adpclust((ans))
+        return(ans)
+    }
 
-    ##---------------
-    ## Return object
-    ##---------------
-    class(final) <- c("adpclust", "list")
-    if(draw) plot.adpclust(final)
-    invisible(final)
+    # -------------------------------------------------------------------------    
+    # Clustring with ‘auto’ option
+    # -------------------------------------------------------------------------    
+    if(centroids == "auto"){
+        if(length(h) > 1){
+            h.seq <- h
+        }else{
+            h.seq <- seq(h / 3, h * 3, length.out = 10)
+        }
+        fd.seq <- lapply(h.seq, function(h) FindFD(distm, h, fdelta))
+        result.seq <- lapply(fd.seq, function(fd){
+            FindClustersAuto(distm = distm, 
+                             f = fd[['f']], 
+                             delta = fd[['delta']], 
+                             ac = ac,
+                             nclust = nclust,
+                             f.cut = f.cut)  
+        })
+        score.seq <- sapply(result.seq, function(x) x$silhouette)
+        iwinner <- which.max(score.seq)
+        ans <- result.seq[[iwinner]]
+        ans[['h']] <- h.seq[iwinner]
+        fd <- fd.seq[[iwinner]]
+        ans[['f']] <- fd[['f']]
+        ans[['delta']] <- fd[['delta']]
+        ans[['selection.type']] <- 'auto'
+        class(ans) <- c("adpclust", "list")
+        if(draw) plot.adpclust((ans))        
+        return(ans)
+    }
+    stop('centroids not recognized') # should never reach here.
 }
+
