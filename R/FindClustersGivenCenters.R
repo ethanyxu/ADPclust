@@ -21,5 +21,5 @@ FindClustersGivenCenters <- function(distm, centers){
     distm <- as.matrix(distm)
     dist.to.centers <- distm[, centers]
     clusters <- apply(dist.to.centers, 1, FUN = which.min)
-    return(clusters = clusters)
+    return(clusters)
 }
