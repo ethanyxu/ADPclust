@@ -1,5 +1,5 @@
 ##' Calculate the ROT bandwidth from either a data frame, or from p and n. 
-##' 
+##' This is a test
 ##' IMPORTANT NOTE: The standard deviation of each variable is omitted in the formula here. For 
 ##' computational consideration each dimension of the data is standardized before applying
 ##' the bandwidth. Two approaches are mathematically equivalent.
