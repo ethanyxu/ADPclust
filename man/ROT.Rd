@@ -2,7 +2,7 @@
 % Please edit documentation in R/ROT.R
 \name{ROT}
 \alias{ROT}
-\title{ROT bandwidth}
+\title{Calculate ROT bandwidth}
 \usage{
 ROT(x, y = NULL)
 }
@@ -15,11 +15,9 @@ ROT(x, y = NULL)
 ROT bandwidth.
 }
 \description{
-Calculate the ROT bandwidth from either a data frame, or from p and n.
+Calculate the ROT bandwidth either from a data frame, or from p and n.
 }
 \details{
-IMPORTANT NOTE: The standard deviation of each variable is omitted in the formula here. For 
-computational consideration each dimension of the data is standardized before applying
-the bandwidth. Two approaches are mathematically equivalent.
+IMPORTANT NOTE: The standard deviation of each variable is omitted in this formula.
 }
 

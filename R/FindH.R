@@ -1,11 +1,11 @@
-##' Find bandwidth h
+##' Find bandwidth h from the number of observations n and the dimension p.
 ##'
-##' @title Find bandwidth h
-##' @param p number of variables
-##' @param n number of observations
-##' @param htype methods to calculate h. One of the following (case insensitive) c("amise", "rot")
+##' @title Find bandwidth h.
+##' @param p dimension of data. The number of variables.
+##' @param n the number of observations.
+##' @param htype methods to calculate h. The valid options are (case insensitive) "amise" or "rot".
 ##' @return bandwidth h.
-##' @author Ethan Xu
+
 FindH <- function(p, n, htype){
     if(!is.numeric(p)) stop('arg p must be numeric')
     if(length(p) != 1) stop('arg p must be scalar')    

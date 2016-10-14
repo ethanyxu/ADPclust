@@ -9,15 +9,12 @@ FindClustersGivenCenters(distm, centers)
 \arguments{
 \item{distm}{distance matrix}
 
-\item{centers}{vector of integers that gives the location of centers. Duplications will be silently dropped.}
+\item{centers}{vector of integers that gives the indices of centers. Duplications will be silently dropped.}
 }
 \value{
-vector of the same length as the the number of observations that gives cluster assignments with integers 1,2,...
+Cluster assignments. A vector of the same length as the number of observations.
 }
 \description{
-Find cluster assignments given centers and distance matrix.
-}
-\author{
-Ethan Xu
+Find cluster assignments from given centers and distance matrix. Each point is assigned to the center that has the shortest Euclidean distance.
 }
 

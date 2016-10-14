@@ -2,22 +2,22 @@
 % Please edit documentation in R/FindDistm.R
 \name{FindDistm}
 \alias{FindDistm}
-\title{Find distance matrix from data}
+\title{Find the distance matrix from data.}
 \usage{
-FindDistm(x, normalize, method = "euclidean")
+FindDistm(x, normalize = FALSE, method = "euclidean")
 }
 \arguments{
 \item{x}{data}
 
-\item{normalize}{boolean. normalize data before calculating distance?}
+\item{normalize}{boolean. Normalize data before calculating distance?}
 
 \item{method}{passed to 'dist()'}
 }
 \value{
-distance matrix of class dist
+distance matrix of class dist.
 }
 \description{
-Find distance matrix from data
+A wrapper of the dist() method, with the option to rescale the data with standard deviation of each dimension before calculating the distance matrix. NOTE: If fdelta='mnorm' is passed to adpclust(), then the distm is calculated from rescaled data internally, i.e. distm <- FindDistm(x, normalize = TRUE).
 }
 \author{
 Ethan Xu

@@ -2,24 +2,22 @@
 % Please edit documentation in R/FindCentersAutoD.R
 \name{FindCentersAutoD}
 \alias{FindCentersAutoD}
-\title{Automatically find centers with diagonal f(x) vs delta(x) thresholds}
+\title{Automatically finds centers with diagonal f(x) vs delta(x) thresholds}
 \usage{
-FindCentersAutoD(f, delta, nclust, rm.dup = TRUE)
+FindCentersAutoD(f, delta, nclust)
 }
 \arguments{
-\item{f}{vector of local distance f(x)}
+\item{f}{vector of local distance.}
 
-\item{delta}{vector of minimal distances to higher ground delta(x)}
+\item{delta}{vector of minimal distances to higher ground.}
 
-\item{nclust}{number of clusters. Can be a vector.}
-
-\item{rm.dup}{boolean. If TRUE (default) remove duplicated center vectors.}
+\item{nclust}{number of clusters. Can be a single integer or a vector of integers. Duplicates are silently removed.}
 }
 \value{
 a list of vectors. Each vector gives the locations of centers.
 }
 \description{
-Automatically find centers with diagonal f(x) vs delta(x) thresholds
+Automatically finds centers with diagonal f(x) vs delta(x) thresholds. This is used in adpclust() with ac = 2. It finds points that are above and farthest from the diagonal line in the f vs. delta plots, and label them to be centers.
 }
 \author{
 Ethan Xu

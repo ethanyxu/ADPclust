@@ -1,5 +1,5 @@
 ## This function is taken and slightly modified from the example of ?identify.
-## It uses identify to select points, and recolor the selected points.
+## It uses identify to select points, and paint the selected points.
 
 PickCenter <- function(x, y = NULL, n = length(x),
                        pch = 19, col = "red", cex = 1.2,

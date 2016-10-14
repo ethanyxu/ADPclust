@@ -7,14 +7,14 @@ load("clust3_test.RData") # clust3.{x, distm, h, f, delta, clusters}
 test_that("FindClustersAuto output", {
     a <- FindClustersAuto(clust3.distm, clust3.f, clust3.delta)
     expect_is(a, 'list')
-    expect_equal(names(a), c('clusters', 'centers', 'silhouette', 'nclust'))
+    expect_equal(names(a), c('clusters', 'centers', 'silhouette', 'nclust', 'tested.sils'))
     expect_equal(all(a$clusters == clust3.clusters), TRUE)
     expect_equal(a$nclust, 3)
     expect_equal(all(a$centers == c(2, 49, 84)), TRUE)
     
     a <- FindClustersAuto(clust3.distm, clust3.f, clust3.delta, ac = 2)
     expect_is(a, 'list')
-    expect_equal(names(a), c('clusters', 'centers', 'silhouette', 'nclust'))
+    expect_equal(names(a), c('clusters', 'centers', 'silhouette', 'nclust', 'tested.sils'))
     
     c.got <- a$clusters
     c.expected <- clust3.clusters

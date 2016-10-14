@@ -3,10 +3,10 @@
 \docType{data}
 \name{clust10}
 \alias{clust10}
-\title{1000 5-dim points scattered in 10 clusters}
+\title{1000 5-dimensional data points that form ten clusters}
 \format{data frame}
 \description{
-1000 5-dim points in 10 clusters. Generated from the genRandomClust() function of the "clusterGeneration" package with separation value 0.2.
+Generated from the genRandomClust() function of the "clusterGeneration" package with separation value 0.2.
 }
 \keyword{datasets}
 

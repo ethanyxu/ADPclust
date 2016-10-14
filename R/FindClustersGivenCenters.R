@@ -1,11 +1,10 @@
-##' Find cluster assignments given centers and distance matrix.
+##' Find cluster assignments from given centers and distance matrix. Each point is assigned to the center that has the shortest Euclidean distance. 
 ##'
 ##' @title Find cluster assignments given centers and distance matrix
 ##' @param distm distance matrix
-##' @param centers vector of integers that gives the location of centers. Duplications will be silently dropped.
+##' @param centers vector of integers that gives the indices of centers. Duplications will be silently dropped.
 ##' @export
-##' @return vector of the same length as the the number of observations that gives cluster assignments with integers 1,2,...
-##' @author Ethan Xu
+##' @return Cluster assignments. A vector of the same length as the number of observations. 
 FindClustersGivenCenters <- function(distm, centers){
     if(!inherits(distm, 'dist')) stop("arg distm must be a dist class")
     if(!is.numeric(centers)) stop("arg centers must be numeric. Got ", class(centers))

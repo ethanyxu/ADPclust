@@ -1,6 +1,6 @@
-#' gene expression data of 38 patients (243 genes) 
+#' 243-dimensional gene expression data of 38 patients (243 genes) 
 #' 
-#' 38 by 243 matrix. Each row is a patient. Each column is a gene.
+#' 38 by 243 matrix. Each row represents a patient. Each column represents a gene.
 #'  
 #' @docType data
 #' @keywords datasets

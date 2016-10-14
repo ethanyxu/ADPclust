@@ -1,15 +1,21 @@
-##' Find f(x) and delta(x) from distm, given h. 
+##' Calculate f(x) and delta(x) from distm and h. 
 ##'
-##' Find f(x) and delta(x).
 ##' @title Find f and delta from distance matrix.
-##' @param distm distance matrix of class 'dist'
-##' @param h bandwidth
-##' @param fdelta String. One of [unorm, mnorm, weighted, count]
+##' @param distm distance matrix of class 'dist'.
+##' @param h bandwidth.
+##' @param fdelta character string that specifies the method used to estimate local density f(x) at each data point x. The default is "mnorm" that uses a multivariate Gaussian density estimation to calculate f. Other options are listed below. Here 'distm' denotes the distance matrix. 
+##' \itemize{
+##' \item{unorm}{(f <- 1/(h * sqrt(2 * pi)) * rowSums(exp(-(distm/h)^2/2))); Univariate Gaussian smoother}
+##' \item{weighted}{(f <- rowSums(exp(-(distm/h)^2))); Univariate weighted smoother}
+##' \item{count}{(f <- rowSums(distm < h) - 1); Histogram estimator (used in Rodriguez [2014])}
+##' }
 ##' @export
-##' @return list of f and delta. Each is a vector.
-##' @author Ethan Xu
+##' @return list of two items: f and delta. 
 
 FindFD <- function(distm, h, fdelta){
+    # -------------------------------------------------------------------------    
+    # Check arguments
+    # -------------------------------------------------------------------------       
     if(!inherits(distm, 'dist')) stop("arg distm must inherit dist class. Got ", class(distm))
     
     n <- attr(distm, 'Size')
@@ -27,7 +33,9 @@ FindFD <- function(distm, h, fdelta){
         stop("Wrong fdelta, try 'unorm', 'weighted', 'count' or 'mnorm' (recommended).")
     }
 
-    ## Find delta(x)
+    # -------------------------------------------------------------------------    
+    # Find f and delta
+    # -------------------------------------------------------------------------       
     if(fdelta == "count"){
         f1 <- rank(f, ties.method = "first") # Break ties in f
         delta <- apply(distm / outer(f1, f1, FUN = ">"), 2, min, na.rm = TRUE)

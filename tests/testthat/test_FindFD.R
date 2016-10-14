@@ -11,6 +11,7 @@ test_that("FindFD output", {
         expect_equal(names(a), c("f", "delta"))
         expect_is(a$f, 'numeric')
         expect_is(a$delta, 'numeric')
+        
         expect_equal(length(a$f), length(a$delta))
     }
 })

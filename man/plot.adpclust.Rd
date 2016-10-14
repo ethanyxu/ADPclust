@@ -4,17 +4,20 @@
 \alias{plot.adpclust}
 \title{Visualize the result of adpclust()}
 \usage{
-\method{plot}{adpclust}(x, cols = "default", ...)
+\method{plot}{adpclust}(x, cols = "default", to.plot = c("cluster.sil",
+  "fd"), ...)
 }
 \arguments{
 \item{x}{an object of class "adpclust". Result of adpclust().}
 
 \item{cols}{vector of colors used to distinguish different clusters. Recycled if necessary.}
 
+\item{to.plot}{string vector that indicate which plot(s) to show. The two options are 'cluster.sil' (nclust vs. silhouette) and 'fd' (f vs. delta).}
+
 \item{...}{Not used.}
 }
 \description{
-Depends on the settings of adpclust, draw figures showing silhouette vs. number of clusters, f vs. delta with selected centroids, and original data (projected to the first two principal components if dim > 2) colored by cluster assignments.
+Plot the f vs. delta plot with selected centroids.
 }
 \examples{
 ## Load a data set with 3 clusters
@@ -22,5 +25,8 @@ data(clust3)
 ## Automatically select cluster centroids
 ans <- adpclust(clust3, centroids = "auto")
 plot(ans)
+plot(ans, to.plot = "fd")
+plot(ans, to.plot = "cluster.sil")
+plot(ans, to.plot = c("cluster.sil", "fd")) #Default
 }
 

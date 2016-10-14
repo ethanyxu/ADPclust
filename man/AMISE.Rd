@@ -7,19 +7,17 @@
 AMISE(x, y = NULL)
 }
 \arguments{
-\item{x}{the number of variables (if y is missing), or a data frame or a matrix (if y is not missing).}
+\item{x}{the number of variables (if y is given), or a data frame or a matrix (if y is missing).}
 
-\item{y}{the number of observations. If y is missing, x should be the data matrix.}
+\item{y}{the number of observations. If y is missing then x is interpreted as the data matrix.}
 }
 \value{
 AMISE bandwidth.
 }
 \description{
-Calculate the AMISE bandwidth from either a data frame, or from p and n.
+Calculate the AMISE bandwidth from either a data frame, or from the number of observations and the dimension of the data.
 }
 \details{
-IMPORTANT NOTE: The standard deviation of each variable is omitted in the formula here. For 
-computational consideration each dimension of the data is standardized before applying
-the bandwidth. Two approaches are mathematically equivalent.
+IMPORTANT NOTE: The standard deviation of each variable is omitted in this formula.
 }
 

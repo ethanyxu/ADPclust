@@ -1,6 +1,6 @@
-#' 90 2-dim points scattered in 3 clusters
+#' 90 2-dimensional data points that form three clusters
 #' 
-#' 90 2-dim points scattered in 3 clusters; Randomly generated from normal distributions
+#' Randomly generated from three normal distributions.
 #'  
 #' @docType data
 #' @keywords datasets

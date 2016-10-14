@@ -6,67 +6,62 @@
 \usage{
 adpclust(x = NULL, distm = NULL, p = NULL, centroids = "auto",
   h = NULL, htype = "amise", nclust = 2:10, ac = 1, f.cut = c(0.1,
-  0.2, 0.3), fdelta = "mnorm", dmethod = "euclidean", verbose = FALSE,
-  draw = FALSE)
+  0.2, 0.3), fdelta = "mnorm", dmethod = "euclidean", draw = FALSE)
 }
 \arguments{
-\item{x}{numeric data frame where rows are observations and columns are variables.}
+\item{x}{numeric data frame where rows are observations and columns are variables. One of x and distm must be provided.}
 
-\item{distm}{distance matrix of class 'dist'. Ignored if x is given.}
+\item{distm}{distance matrix of class 'dist'. distm is ignored if x is given.}
 
-\item{p}{number of variables (ncol(x)). Ignored if x is given.}
+\item{p}{number of variables (ncol(x)). This is only needed if neither x nor h is given.}
 
-\item{centroids}{character string specifying "user" or "auto" selection of cluster centroids.}
+\item{centroids}{character string specifying how cluster centroids are selected. Valid options are "user" and "auto".}
 
-\item{h}{nonnegative number specifying the bandwidth in density estimation NULL (default). If h is NULL, the algorithm will attempt to find h in a neighborhood centered at either the AMISE bandwidth or ROT bandwidth (see htype).}
+\item{h}{nonnegative number specifying the bandwidth in density estimation. If h is NULL, the algorithm attempts to find h in a neighborhood centered at either the AMISE bandwidth or ROT bandwidth (see htype).}
 
-\item{htype}{character string specifying the method used to calculate a reference bandwidth for the density estimation. 'htype' is ignored if h is not NULL. Currently the two possible choices of 'htype' are "ROT" and "AMISE" (see details).}
+\item{htype}{character string specifying the method used to calculate a reference bandwidth for the density estimation. htype is ignored if h is given. Valid options of are "ROT" and "AMISE" (see details).}
 
-\item{nclust}{integer, or integer vector specifying the pool of the number of clusters in automatic variation. Default is 2:10.}
+\item{nclust}{integer, or a vector of integers specifying the pool of the number of clusters in automatic variation. The default is 2:10.}
 
-\item{ac}{integer indicating which automatic cut method is used. Currently it takes one of two values:
+\item{ac}{integer indicating which automatic cut method is used. This is ignored if centroids = 'user'. The valid options are:
 \itemize{
-\item{ac = 1: }{in the f vs. delta decision plot, 'nclust' points with f > percentile f.cut and nclust largest delta's are declaired centroids.}
-\item{ac = 2: }{in the f vs. delta decision plot, denote by l the diagonal line connecting the point with smallest f and largest delta, and the point with largest f and smallest delta. 'nclust' points that are above l, and have are farthest away from l are declared centroids.}
+\item{ac = 1: }{centroids are chosen to be the data points x's with the largest delta values such that f(x) >= a'th percentile of all f(x). The number of centroids is given by the parameter nclust. The cutting percentile(s) is given by the parameter f.cut. }
+\item{ac = 2: }{let l denote the straight line connecting (min(f), max(delta)) and (max(f), min(delta)). The centroids are selected to be data points above l and farthest away from it. The number of centroids is given by the parameter nclust.}
 }}
 
-\item{f.cut}{number between (0, 1) or numeric vector of numbers between (0,1). f.cut is used in centroids = "auto" to automatically select cluster centroids from the decision plot. Points with f(x) > f.cut and high delta(x) are selected as one set of candidate centroids (see details). Default = c(0.1, 0.2, 0.3).}
+\item{f.cut}{number between (0, 1) or numeric vector of numbers between (0, 1). f.cut is used when centroids = "auto" and ac = 1 to automatically select cluster centroids from the decision plot (see ac). The default is c(0.1, 0.2, 0.3).}
 
-\item{fdelta}{character string that specifies the method to estimate densities at each data point. The default (recommended) is "mnorm": multivariate Gaussian density estimation. Other options include
+\item{fdelta}{character string that specifies the method used to estimate local density f(x) at each data point x. The default (recommended) is "mnorm" that uses a multivariate Gaussian density estimation to calculate f. Other options are listed below. Here 'distm' denotes the distance matrix. 
 \itemize{
 \item{unorm}{(f <- 1/(h * sqrt(2 * pi)) * rowSums(exp(-(distm/h)^2/2))); Univariate Gaussian smoother}
-\item{weighted}{(rho <- rowSums(exp(-(distm/h)^2))); Univariate weighted smoother}
-\item{count}{(rho <- rowSums(distm < h) - 1); Histogram estimator (used in Rodriguez [2014])}
+\item{weighted}{(f <- rowSums(exp(-(distm/h)^2))); Univariate weighted smoother}
+\item{count}{(f <- rowSums(distm < h) - 1); Histogram estimator (used in Rodriguez [2014])}
 }}
 
-\item{dmethod}{character string describing distance measures used in dist() to calculate proximity matrix of dat. This is passed to the argument "method" in dist(). Default = "euclidean"}
+\item{dmethod}{character string that is passed to the 'method' argument in function dist(), which is used to calculate the distance matrix if 'distm' is not given. The default is "euclidean".}
 
-\item{verbose}{if TRUE progress will be displayed.}
-
-\item{draw}{if TRUE results will be plotted on screen. Same as plot.adpclust(ans), where 'ans' is the outcome of 'adpclust()'}
+\item{draw}{boolean. If draw = TRUE the clustering result is plotted after the algorithm finishes. The plot is produced by by plot.adpclust(ans), where 'ans' is the outcome of 'adpclust()'}
 }
 \value{
-An 'adpclust' object, which contains the list of the following items.
+An 'adpclust' object that contains the list of the following items.
 \itemize{
-\item{clusters}{ Cluster assignments.}
+\item{clusters}{ Cluster assignments. A vector of the same length as the number of observations.}
 \item{centers:}{ Indices of the clustering centers.}
-\item{silhouette:}{ Silhouette score.}
+\item{silhouette:}{ Silhouette score from the final clustering result.}
 \item{nclust:}{ Number of clusters.}
 \item{h:}{ Final bandwidth.}
-\item{f:}{ Final density vector f(x) for each data point.}
-\item{delta:}{ Final delta vector delta(x) for each data point.}
-\item{selection.type:}{ 'user' or 'auto'}
+\item{f:}{ Final density vector f(x).}
+\item{delta:}{ Final delta vector delta(x).}
+\item{selection.type:}{ 'user' or 'auto'.}
 }
 }
 \description{
-Clustering of data by finding cluster centers from estimated density peaks. It is a non-iterative procedure that incorporates multivariate Gaussian density estimation. The number of clusters as well as bandwidths can either be selected by the user or selected automatically through an internal clustering criterion.
+Clustering of data by finding cluster centers from estimated density peaks. ADPclust is a non-iterative procedure that incorporates multivariate Gaussian density estimation. The number of clusters as well as bandwidths can either be selected by the user or selected automatically through an internal clustering criterion.
 }
 \details{
-Given n data points in p dimensions, adpclust() first finds local density estimation f(x) of each data point x. The bandwidth h used in density estimation can either be explicitly specified by user through the argument 'h', or automatically selected from a range of testing values. In the case of automatic selection of bandwidths, first a reference bandwidth h0 is calculated by one of the two methods: Scott's Rule-of-Thumb value (htype = "ROT") or Wand's Asymptotic-Mean-Integrated-Squared-Error value (htype = "AMISE"), then 10 values equally spread in the range [1/3h0, 3h0] are tested. 
+Given n data points x's in p dimensions, adpclust() calculates f(x) and delta(x) for each data point x, where f(x) is the local density at x, and delta(x) is the shortest distance between x and y for all y such that f(x) <= f(y). Data points with large f and large delta values are labeled class centroids. In other words, they appear as isolated points in the upper right corner of the f vs. delta plot (the decision plot). After cluster centroids are determined, other data points are clustered according to their distances to the closes centroids.
 
-For each data point x, adpclust() also finds an 'isolation' index delta(x), which is defined as the distance between x and the closest point y with f(y) > f(x). The scatter plot (f(x), delta(x)) is called the decision plot. For an appropriate h, cluster centroids appear in the upper-right corner of the decision plot, i.e. points with large f(x) and delta(x). After centroids are picked from the decision plot either by user (centroids = 'user') or automatically (centroids = "auto"), other data points are clustered to the cluster marked by the closest centroid. 
-
-When centroids = 'user', the decision plot is generated and displayed on screen. The user selects centroids by clicking the points on the upper right corner of the decision plot. A right click or ESC ends the selection.
+A bandwidth (smoothing parameter) h is used to calculate local density f(x) in various ways. See parameter 'fdelta' for details. If centroids = 'user', then h must be explicitly provided. If centroids = 'auto' and h is not specified, then it is automatically selected from a range of testing values: First a reference bandwidth h0 is calculated by one of the two methods: Scott's Rule-of-Thumb value (htype = "ROT") or Wand's Asymptotic-Mean-Integrated-Squared-Error value (htype = "AMISE"), then 10 values equally spread in the range [1/3h0, 3h0] are tested. The value that yields the highest silhouette score is chosen as the final h.
 }
 \examples{
 # Load a data set with 3 clusters

@@ -2,29 +2,35 @@
 % Please edit documentation in R/FindClustersAuto.R
 \name{FindClustersAuto}
 \alias{FindClustersAuto}
-\title{Automatically find cluster assignment that maximizes silouette.}
+\title{Automatically find cluster assignment given f and delta.}
 \usage{
 FindClustersAuto(distm, f, delta, ac = 1, nclust = 2:10, f.cut = c(0.1,
   0.2, 0.3))
 }
 \arguments{
-\item{distm}{distance matrix}
+\item{distm}{the distance matrix}
 
-\item{f}{vector of local distance f(x)}
+\item{f}{vector of local distance f(x). See the help of adpclust() for details.}
 
-\item{delta}{vector of minimal distances to higher ground delta(x)}
+\item{delta}{vector of minimal distances to higher ground delta(x). See the help of adpclust() for details.}
 
-\item{ac}{type of auto center picking from the f(x) vs. delta(x) plot. Only takes two values c(1, 2). If ac == 1 centers points with highest delta(x)'s to the right of vertical line at f(x) = f.cut. If ac == 2 centers are points above diagonal line.}
+\item{ac}{type of auto selection. The valid options are 1 and 2. See the help of adpclust() for details.}
 
-\item{nclust}{number of clusters. Can be a vector.}
+\item{nclust}{number of clusters to test. Either a single integer or a vector of integers.}
 
-\item{f.cut}{f(x) cuts to use when ac == 1. Must be values between 0 and 1. Can be a vector.}
+\item{f.cut}{number between (0, 1) or numeric vector of numbers between (0, 1). Data points whose f values are larger than f.cut with large delta values are selected as centers. The default is c(0.1, 0.2, 0.3). See the help of FindCentersAutoV() for more details.}
 }
 \value{
-list of four elements: clusters, centers, silhouette and nclust.
+list of four elements: 
+\itemize{
+\item{clusters}{ Cluster assignments. A vector of the same length as the number of observations.}
+\item{centers:}{ Indices of the clustering centers.}
+\item{silhouette:}{ Silhouette score from the final clustering result.}
+\item{nclust:}{ Number of clusters.}
+}
 }
 \description{
-Automatically find cluster assignment that maximizes silouette.
+This is the subroutine that automatically finds cluster assignments from given f and delta by testing various parameter settings and find the one that maximizes the silhouette.
 }
 \author{
 Ethan Xu

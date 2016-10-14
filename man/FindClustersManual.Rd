@@ -7,29 +7,32 @@
 FindClustersManual(distm, f, delta)
 }
 \arguments{
-\item{distm}{distance matrix}
+\item{distm}{distance matrix.}
 
-\item{f}{vector of local densities f(x). Same length of the number of observations}
+\item{f}{vector of local densities f(x). Same length of the number of observations.}
 
-\item{delta}{vector of distances to the closest high ground delta(x). Same length of the number of observations}
+\item{delta}{vector of distances to the closest high ground delta(x). Same length of the number of observations.}
 }
 \value{
 a list of the following items:
 \itemize{
-\item clusters: integer string recording cluster assignments. 
-\item centers: indices of cluster centers.
-\item score: silouette of the clustering result.
-\item nclust: number of clusters.
+\item{clusters}{ Cluster assignments. A vector of the same length as the number of observations.}
+\item{centers:}{ Indices of the clustering centers.}
+\item{silhouette:}{ Silhouette score from the final clustering result.}
+\item{nclust:}{ Number of clusters.}
 }
 }
 \description{
-Find clusters from user selections of centers on the
-}
-\details{
-plots f(x) vs. delta(x) plot, then allows user to select
-centers of clusters.
+Plot the f vs. delta plot, then wait for the user to select centers of clusters by left clicking the points. In general points with both large f and large delta are good candidates of cluster centroids. Selected centers are highlighted. Press ESC to end the selection.
 }
 \examples{
-## Internal examples
+data(clust3)
+distm <- FindDistm(clust3, normalize = TRUE)
+\dontrun{
+fd <- FindFD(distm, 2, "mnorm")
+ans <- FindClustersManual(distm, fd$f, fd$delta)
+names(ans)
+ans$centers
+}
 }
 

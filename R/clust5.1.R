@@ -1,6 +1,6 @@
-#' 500 5-dim points scattered in 5 clusters
+#' 500 5-dimensional data points that form five clusters
 #' 
-#' 500 5-dim points in 5 clusters. Generated from the genRandomClust() function of the "clusterGeneration" package with separation value 0.01 (tightly clustered).
+#' Generated from the genRandomClust() function of the "clusterGeneration" package with separation value 0.01 (tightly clustered).
 #'  
 #' @docType data
 #' @keywords datasets

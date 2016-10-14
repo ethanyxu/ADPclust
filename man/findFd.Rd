@@ -7,22 +7,21 @@
 FindFD(distm, h, fdelta)
 }
 \arguments{
-\item{distm}{distance matrix of class 'dist'}
+\item{distm}{distance matrix of class 'dist'.}
 
-\item{h}{bandwidth}
+\item{h}{bandwidth.}
 
-\item{fdelta}{String. One of [unorm, mnorm, weighted, count]}
+\item{fdelta}{character string that specifies the method used to estimate local density f(x) at each data point x. The default is "mnorm" that uses a multivariate Gaussian density estimation to calculate f. Other options are listed below. Here 'distm' denotes the distance matrix. 
+\itemize{
+\item{unorm}{(f <- 1/(h * sqrt(2 * pi)) * rowSums(exp(-(distm/h)^2/2))); Univariate Gaussian smoother}
+\item{weighted}{(f <- rowSums(exp(-(distm/h)^2))); Univariate weighted smoother}
+\item{count}{(f <- rowSums(distm < h) - 1); Histogram estimator (used in Rodriguez [2014])}
+}}
 }
 \value{
-list of f and delta. Each is a vector.
+list of two items: f and delta.
 }
 \description{
-Find f(x) and delta(x) from distm, given h.
-}
-\details{
-Find f(x) and delta(x).
-}
-\author{
-Ethan Xu
+Calculate f(x) and delta(x) from distm and h.
 }
 

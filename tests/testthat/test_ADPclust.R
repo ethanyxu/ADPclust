@@ -22,10 +22,10 @@ test_that("ADPclust output", {
     a <- adpclust(distm = clust3.distm, p = 2)
     expect_equal(inherits(a, "adpclust"), TRUE)
     expect_equal(inherits(a, "list"), TRUE)
-    expect_equal(length(a), 8)
     expect_equal(setequal(names(a), 
-                          c("clusters", "centers", "silhouette", 
-                            "nclust", "h", "f", "delta", "selection.type")),
+                          c("clusters", "centers", "silhouette",
+                            "nclust", "h", "f", "delta", "selection.type",
+                            "tested")),
                  TRUE)
     ## Test cluster result
     expect_equal(IsSameClustering(a$clusters, clust3.clusters), TRUE)
