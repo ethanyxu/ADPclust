@@ -4,8 +4,8 @@ ADPclust (Fast Clustering Using Adaptive Density Peak Detection) is a non-iterat
 ### Most recent version: 0.6.5
 
 # References
-* **Vignette:** http://hal.case.edu/~yifan/ADPclust.html
-* **CRAN release** (0.6.3)**:** https://cran.r-project.org/web/packages/ADPclust/index.html 
+* **Vignette:** https://cran.r-project.org/web/packages/ADPclust/vignettes/ADPclust.html
+* **CRAN release** (0.7)**:** https://cran.r-project.org/web/packages/ADPclust/index.html
 * **Journal paper:** 
   * Xiao-Feng Wang, and Yifan Xu, (2015) "Fast Clustering Using Adaptive Density Peak Detection." *Statistical Methods in Medical Research, doi:10.1177/0962280215609948* ([PubMed Link](http://www.ncbi.nlm.nih.gov/pubmed/26475830))
   * Alex Rodriguez, and Alessandro Laio, (2014) "Clustering by fast search and find of density peaks." *Science 344, no. 6191 (2014): 1492-1496*
@@ -41,4 +41,4 @@ summary(ans)
 # Manual centroids selection
 adpclust(clust3, centroids = "user")
 ```
-For more examples please see the [Vignette](http://hal.case.edu/~yifan/ADPclust.html).
+For more examples please see the [Vignette](https://cran.r-project.org/web/packages/ADPclust/vignettes/ADPclust.html).
