@@ -1,7 +1,7 @@
 # Introduction
 ADPclust (Fast Clustering Using Adaptive Density Peak Detection) is a non-iterative procedure that clusters high dimensional data by finding cluster centers from estimated density peaks. It incorporates multivariate local Gaussian density estimation. The number of clusters as well as bandwidths can either be selected by the user or selected automatically through an internal clustering criterion.
 
-### Most recent version: 0.6.5
+### Most recent version: 0.7
 
 # References
 * **Vignette:** https://cran.r-project.org/web/packages/ADPclust/vignettes/ADPclust.html
