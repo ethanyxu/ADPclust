@@ -100,7 +100,9 @@ adpclust <- function(x = NULL,
                      f.cut = c(0.1, 0.2, 0.3),
                      fdelta = 'mnorm',
                      dmethod = 'euclidean',
-                     draw = FALSE
+                     d.args = list(),
+                     draw = FALSE,
+                     verbose = TRUE
                      ){
     # -------------------------------------------------------------------------
     # Check arguments
@@ -123,9 +125,12 @@ adpclust <- function(x = NULL,
     if(length(f.cut) == 0) stop('arg f.cut is empty: ', f.cut)
     if(min(f.cut) < 0) stop('arg f.cut must be between 0 - 1. Got', f.cut)
     if(max(f.cut) >= 1) stop('arg f.cut must be between 0 - 1. Got', f.cut)    
-    if(!fdelta %in% c('mnorm', 'unorm', 'weighted', 'count')){
-        stop('arg fdelta must be one of c(\'mnorm\', \'unorm\', \'weighted\', \'count\'). Got ', fdelta)        
+    if(!fdelta %in% c('mnorm', 'unorm', 'weighted', 'count', 'knn')){
+        stop("arg fdelta must be one of c('mnorm', 'unorm', 'weighted', 'count', 'knn'). Got ", fdelta)        
     } 
+    # -------------------------------------------------------------------------
+    # Find distance matrix if x is given.
+    # -------------------------------------------------------------------------
     if(is.null(x)){
         # Use distm
         if(is.null(distm)) stop("Must provide one of x or distm")
@@ -136,9 +141,10 @@ adpclust <- function(x = NULL,
     }else{
         # Use x. Calculate distm.
         if(fdelta == "mnorm"){
+            warning("fdelta = 'mnorm, ignoring 'dmethod'")
             distm <- FindDistm(x, normalize = TRUE, method = "euclidean")
         }else{
-            distm <- FindDistm(x, normalize = FALSE, method = dmethod)
+            distm <- FindDistm(x, normalize = FALSE, method = dmethod, args = d.args)
         }
         p = ncol(x)
     }
