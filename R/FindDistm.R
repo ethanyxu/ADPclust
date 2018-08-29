@@ -12,9 +12,9 @@
 ##' # Load a data set 
 ##' data(clust3)
 ##' # Specify distm instead of data
-##' distm.euclidean <- FindDistm(clust3, method = 'euclidean')
-##' distm.gower <- FindDistm(clust3, method = 'gower')
-##' distm.rf <- FindDistm(clust3, method = 'rf')
+##' distm.euclidean <- FindDistm(clust3, method='euclidean')
+##' distm.gower <- FindDistm(clust3, method='gower')
+##' distm.rf <- FindDistm(clust3, method='rf')
 
 FindDistm <- function(x, normalize = FALSE, method = 'euclidean', 
                       args = list(), verbose = TRUE){
