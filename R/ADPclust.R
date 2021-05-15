@@ -79,10 +79,10 @@
 ##' # using the 'ROT()' function
 ##' ans <- adpclust(clust3, centroids = "auto", h = ROT(clust3))
 ##'
-##' # Specify density values f
+##' # Specify distance matrix distm and density values f
 ##' distm <- FindDistm(clust3, normalize = TRUE)
 ##' f <- FindFD(distm, h = 0.2, fdelta="mnorm")[["f"]]
-##' ans <- adpclust(clust3, centroids = "auto", nclust = 2:6, f = f)
+##' ans <- adpclust(distm = distm, centroids = "auto", nclust = 2:6, f = f)
 ##' 
 ##' # Centroids selected by user
 ##' \dontrun{
