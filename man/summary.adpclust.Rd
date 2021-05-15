@@ -14,4 +14,3 @@
 \description{
 Summarizes the result from the adpclust() function.
 }
-

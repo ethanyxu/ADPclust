@@ -22,4 +22,3 @@ Automatically finds centers with diagonal f(x) vs delta(x) thresholds. This is u
 \author{
 Ethan Xu
 }
-

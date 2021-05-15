@@ -20,4 +20,3 @@ Calculate the ROT bandwidth either from a data frame, or from p and n.
 \details{
 IMPORTANT NOTE: The standard deviation of each variable is omitted in this formula.
 }
-

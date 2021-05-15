@@ -4,9 +4,10 @@
 \name{clust3}
 \alias{clust3}
 \title{90 2-dimensional data points that form three clusters}
-\format{data frame}
+\format{
+data frame
+}
 \description{
 Randomly generated from three normal distributions.
 }
 \keyword{datasets}
-

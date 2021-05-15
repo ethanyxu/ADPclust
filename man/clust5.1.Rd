@@ -4,9 +4,10 @@
 \name{clust5.1}
 \alias{clust5.1}
 \title{500 5-dimensional data points that form five clusters}
-\format{data frame}
+\format{
+data frame
+}
 \description{
 Generated from the genRandomClust() function of the "clusterGeneration" package with separation value 0.01 (tightly clustered).
 }
 \keyword{datasets}
-

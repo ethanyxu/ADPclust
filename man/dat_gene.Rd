@@ -4,9 +4,10 @@
 \name{dat_gene}
 \alias{dat_gene}
 \title{243-dimensional gene expression data of 38 patients (243 genes)}
-\format{matrix}
+\format{
+matrix
+}
 \description{
 38 by 243 matrix. Each row represents a patient. Each column represents a gene.
 }
 \keyword{datasets}
-

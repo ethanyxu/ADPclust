@@ -4,8 +4,14 @@
 \alias{FindClustersAuto}
 \title{Automatically find cluster assignment given f and delta.}
 \usage{
-FindClustersAuto(distm, f, delta, ac = 1, nclust = 2:10, f.cut = c(0.1,
-  0.2, 0.3))
+FindClustersAuto(
+  distm,
+  f,
+  delta,
+  ac = 1,
+  nclust = 2:10,
+  f.cut = c(0.1, 0.2, 0.3)
+)
 }
 \arguments{
 \item{distm}{the distance matrix}
@@ -35,4 +41,3 @@ This is the subroutine that automatically finds cluster assignments from given f
 \author{
 Ethan Xu
 }
-

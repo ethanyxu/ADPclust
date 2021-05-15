@@ -1,8 +1,8 @@
 Package: ADPclust
 Type: Package
 Title: Fast Clustering Using Adaptive Density Peak Detection
-Version: 0.7
-Authors@R: c(person("Yifan (Ethan) Xu", email = "ethan.yifanxu@gmail.com", role = c("aut","cre")), person("Xiao-Feng", "Wang", email = "wangx6@ccf.org", role = "aut"))
+Version: 0.8
+Authors@R: c(person("Ethan Yifan Xu", email = "ethan.yifanxu@gmail.com", role = c("aut","cre")), person("Xiao-Feng", "Wang", email = "wangx6@ccf.org", role = "aut"))
 Description: An implementation of ADPclust clustering procedures (Fast
     Clustering Using Adaptive Density Peak Detection). The work is built and
     improved upon the idea of Rodriguez and Laio (2014)<DOI:10.1126/science.1242072>. 
@@ -16,9 +16,9 @@ Description: An implementation of ADPclust clustering procedures (Fast
     research article associated with this package: "Wang, Xiao-Feng, and 
     Yifan Xu (2015)<DOI:10.1177/0962280215609948> Fast clustering using adaptive 
     density peak detection." Statistical methods in medical research". url:
-    http://smm.sagepub.com/content/early/2015/10/15/0962280215609948.abstract. 
+    <http://smm.sagepub.com/content/early/2015/10/15/0962280215609948.abstract>. 
 Depends:
-    R (>= 3.0.0),
+    R (>= 4.0.0)
 Imports:
     dplyr,
     cluster,
@@ -32,4 +32,4 @@ LazyData: true
 Suggests:
     rmarkdown,
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 7.1.1

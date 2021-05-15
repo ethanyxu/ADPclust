@@ -4,8 +4,7 @@
 \alias{plot.adpclust}
 \title{Visualize the result of adpclust()}
 \usage{
-\method{plot}{adpclust}(x, cols = "default", to.plot = c("cluster.sil",
-  "fd"), ...)
+\method{plot}{adpclust}(x, cols = "default", to.plot = c("cluster.sil", "fd"), ...)
 }
 \arguments{
 \item{x}{an object of class "adpclust". Result of adpclust().}
@@ -29,4 +28,3 @@ plot(ans, to.plot = "fd")
 plot(ans, to.plot = "cluster.sil")
 plot(ans, to.plot = c("cluster.sil", "fd")) #Default
 }
-

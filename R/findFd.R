@@ -4,6 +4,8 @@
 ##' @param distm distance matrix of class 'dist'.
 ##' @param h bandwidth.
 ##' @param fdelta character string that specifies the method used to estimate local density f(x) at each data point x. The default is "mnorm" that uses a multivariate Gaussian density estimation to calculate f. Other options are listed below. Here 'distm' denotes the distance matrix. 
+##' @param f numerical vector. Density values of data points. If not given 
+##' (default) it is estimated by the method specified in "fdelta"
 ##' \itemize{
 ##' \item{unorm}{(f <- 1/(h * sqrt(2 * pi)) * rowSums(exp(-(distm/h)^2/2))); Univariate Gaussian smoother}
 ##' \item{weighted}{(f <- rowSums(exp(-(distm/h)^2))); Univariate weighted smoother}

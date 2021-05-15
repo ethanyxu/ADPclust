@@ -4,9 +4,21 @@
 \alias{adpclust}
 \title{Fast Clustering Using Adaptive Density Peak Detection}
 \usage{
-adpclust(x = NULL, distm = NULL, p = NULL, centroids = "auto",
-  h = NULL, htype = "amise", nclust = 2:10, ac = 1, f.cut = c(0.1,
-  0.2, 0.3), fdelta = "mnorm", dmethod = "euclidean", draw = FALSE)
+adpclust(
+  x = NULL,
+  distm = NULL,
+  p = NULL,
+  centroids = "auto",
+  h = NULL,
+  htype = "amise",
+  nclust = 2:10,
+  ac = 1,
+  f.cut = c(0.1, 0.2, 0.3),
+  fdelta = "mnorm",
+  dmethod = "euclidean",
+  draw = FALSE,
+  f = NULL
+)
 }
 \arguments{
 \item{x}{numeric data frame where rows are observations and columns are variables. One of x and distm must be provided.}
@@ -41,6 +53,8 @@ adpclust(x = NULL, distm = NULL, p = NULL, centroids = "auto",
 \item{dmethod}{character string that is passed to the 'method' argument in function dist(), which is used to calculate the distance matrix if 'distm' is not given. The default is "euclidean".}
 
 \item{draw}{boolean. If draw = TRUE the clustering result is plotted after the algorithm finishes. The plot is produced by by plot.adpclust(ans), where 'ans' is the outcome of 'adpclust()'}
+
+\item{f}{vector of numerical values. Density values of x. If this is provided then ADPclust will not estimate the densities.}
 }
 \value{
 An 'adpclust' object that contains the list of the following items.
@@ -95,6 +109,11 @@ ans <- adpclust(clust3, centroids = "auto", nclust = 2:6, ac = 2)
 # using the 'ROT()' function
 ans <- adpclust(clust3, centroids = "auto", h = ROT(clust3))
 
+# Specify distance matrix distm and density values f
+distm <- FindDistm(clust3, normalize = TRUE)
+f <- FindFD(distm, h = 0.2, fdelta="mnorm")[["f"]]
+ans <- adpclust(distm = distm, centroids = "auto", nclust = 2:6, f = f)
+
 # Centroids selected by user
 \dontrun{
 ans <- adpclust(clust3, centroids = "user", h = ROT(clust3))
@@ -113,4 +132,3 @@ plot(ans)
 \item{PubMed: \url{http://www.ncbi.nlm.nih.gov/pubmed/26475830}}
 }
 }
-

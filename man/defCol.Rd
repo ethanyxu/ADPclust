@@ -12,4 +12,3 @@ vector of colors
 \description{
 Returns 10 default colors
 }
-
