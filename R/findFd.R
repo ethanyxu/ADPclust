@@ -12,29 +12,33 @@
 ##' @export
 ##' @return list of two items: f and delta. 
 
-FindFD <- function(distm, h, fdelta){
+FindFD <- function(distm, h, fdelta, f = NULL){
     # -------------------------------------------------------------------------    
     # Check arguments
     # -------------------------------------------------------------------------       
     if(!inherits(distm, 'dist')) stop("arg distm must inherit dist class. Got ", class(distm))
     
     n <- attr(distm, 'Size')
-    ## Find f(x)
     distm <- as.matrix(distm)
-    if(fdelta == "unorm"){
-        f <- 1/(h * sqrt(2 * pi)) * rowSums(exp(-(distm/h)^2/2))
-    }else if(fdelta == "weighted"){
-        f <- rowSums(exp(-(distm/h)^2))        
-    }else if(fdelta == "count"){
-        f <- rowSums(distm < h) - 1   
-    }else if(fdelta == "mnorm"){
-        f <- rowSums(exp(-(distm / h) ^ 2 / 2))
-    }else{
-        stop("Wrong fdelta, try 'unorm', 'weighted', 'count' or 'mnorm' (recommended).")
+    # ------------------------------------------------------------------------- 
+    # Find f(x)
+    # ------------------------------------------------------------------------- 
+    if(is.null(f)){
+        if(fdelta == "unorm"){
+            f <- 1/(h * sqrt(2 * pi)) * rowSums(exp(-(distm/h)^2/2))
+        }else if(fdelta == "weighted"){
+            f <- rowSums(exp(-(distm/h)^2))        
+        }else if(fdelta == "count"){
+            f <- rowSums(distm < h) - 1   
+        }else if(fdelta == "mnorm"){
+            f <- rowSums(exp(-(distm / h) ^ 2 / 2))
+        }else{
+            stop("Wrong fdelta, try 'unorm', 'weighted', 'count' or 'mnorm' (recommended).")
+        }       
     }
 
     # -------------------------------------------------------------------------    
-    # Find f and delta
+    # Find delta
     # -------------------------------------------------------------------------       
     if(fdelta == "count"){
         f1 <- rank(f, ties.method = "first") # Break ties in f

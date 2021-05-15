@@ -27,6 +27,7 @@
 ##' }
 ##' @param dmethod character string that is passed to the 'method' argument in function dist(), which is used to calculate the distance matrix if 'distm' is not given. The default is "euclidean".
 ##' @param draw boolean. If draw = TRUE the clustering result is plotted after the algorithm finishes. The plot is produced by by plot.adpclust(ans), where 'ans' is the outcome of 'adpclust()'
+##' @param f vector of numerical values. Density values of x. If this is provided then ADPclust will not estimate the densities. 
 ##' @return An 'adpclust' object that contains the list of the following items.
 ##' \itemize{
 ##' \item{clusters}{ Cluster assignments. A vector of the same length as the number of observations.}
@@ -78,6 +79,11 @@
 ##' # using the 'ROT()' function
 ##' ans <- adpclust(clust3, centroids = "auto", h = ROT(clust3))
 ##'
+##' # Specify density values f
+##' distm <- FindDistm(clust3, normalize = TRUE)
+##' f <- FindFD(distm, h = 0.2, fdelta="mnorm")[["f"]]
+##' ans <- adpclust(clust3, centroids = "auto", nclust = 2:6, f = f)
+##' 
 ##' # Centroids selected by user
 ##' \dontrun{
 ##' ans <- adpclust(clust3, centroids = "user", h = ROT(clust3))
@@ -100,7 +106,8 @@ adpclust <- function(x = NULL,
                      f.cut = c(0.1, 0.2, 0.3),
                      fdelta = 'mnorm',
                      dmethod = 'euclidean',
-                     draw = FALSE
+                     draw = FALSE,
+                     f = NULL
                      ){
     # -------------------------------------------------------------------------
     # Check arguments
@@ -108,7 +115,11 @@ adpclust <- function(x = NULL,
     if(!centroids %in% c('user', 'auto')){
         stop('arg centroids must be one of c(\'user\', \'auto\') Got ', centroids)  
     }
+    if(!is.null(distm) && !inherits(distm, 'dist')) stop("arg distm must inherit dist class. Got ", class(distm))
     if(!is.null(h)){
+        if(!is.null(f)) stop('Both h and f are provided. If you provide the 
+                             density f, then there is no need to specify h, 
+                             since there is no need to use h to estimate f.')
         if(!is.numeric(h)) stop('arg h must be numeric. Got ', class(h))
         if(length(h) == 0) stop('arg h is empty: ', h)    
         if(min(h) <= 0) stop('arg h must be nonnegative. Got', h)
@@ -125,13 +136,25 @@ adpclust <- function(x = NULL,
     if(max(f.cut) >= 1) stop('arg f.cut must be between 0 - 1. Got', f.cut)    
     if(!fdelta %in% c('mnorm', 'unorm', 'weighted', 'count')){
         stop('arg fdelta must be one of c(\'mnorm\', \'unorm\', \'weighted\', \'count\'). Got ', fdelta)        
-    } 
+    }
+    if(!is.null(f)){
+        if(!is.vector(f)) stop("f must be a vector, Got ", class(f))
+        if(!is.null(x) && length(f) != nrow(x)){
+            stop("Length of f and length of x don't match")
+        } 
+        if(!is.null(distm) && attr(distm, "Size") != length(f)){
+            stop("Length of f and size of distm must match")
+        }
+    }
+    
     if(is.null(x)){
         # Use distm
         if(is.null(distm)) stop("Must provide one of x or distm")
         if(!inherits(distm, 'dist')) stop("arg distm must inherit dist class. Got ", class(distm))
-        if(is.null(p) && is.null(h)){
-            stop("Bandwidth h and data x are not given. Must provide p to calculate h.")
+        if(is.null(p) && is.null(h) && is.null(f)){
+            stop("Data x are not given. Densities values f are not given. 
+                 You must provide the bandwidth h for the model to calculate f, 
+                 or provide dimension p so we can estimate h.") 
         }
     }else{
         # Use x. Calculate distm.
@@ -146,7 +169,7 @@ adpclust <- function(x = NULL,
     # -------------------------------------------------------------------------
     # Find bandwidth h
     # -------------------------------------------------------------------------    
-    if(is.null(h)){
+    if(is.null(h) && is.null(f)){
         if(fdelta != "mnorm"){
             stop("Must give h unless fdelta == 'mnorm'")
         }
@@ -157,10 +180,10 @@ adpclust <- function(x = NULL,
     # Clustering with the 'user' option
     # -------------------------------------------------------------------------    
     if(centroids == "user"){
-        if(length(h) > 1){
+        if(is.null(f) && (length(h) > 1)){
             stop("h must be a scalar when centroids == 'user'")
         }
-        fd <- FindFD(distm, h, fdelta)
+        fd <- FindFD(distm = distm, h = h, fdelta = fdelta, f = f)
         ans <- FindClustersManual(distm, fd$f, fd$delta)
         ans[['h']] <- h
         ans[['f']] <- fd[['f']]
@@ -172,16 +195,22 @@ adpclust <- function(x = NULL,
     }
 
     # -------------------------------------------------------------------------    
-    # Clustring with the 'auto' option
+    # Clustering with the 'auto' option
     # -------------------------------------------------------------------------    
     if(centroids == "auto"){
-        if(length(h) > 1){
-            h.seq <- h
+        if(is.null(f)){
+            if(length(h) > 1){
+                h.seq <- h
+            }else{
+                h.seq <- seq(h / 3, h * 3, length.out = 10)
+            }
+            # Find f and delta for each h
+            fd.list <- lapply(h.seq, function(h) FindFD(distm, h, fdelta))            
         }else{
-            h.seq <- seq(h / 3, h * 3, length.out = 10)
+            fd.list <- list(FindFD(distm = distm, h = h, fdelta = fdelta, f = f))
+            h.seq <- list(NULL)
         }
-        # Find f and delta for each h
-        fd.list <- lapply(h.seq, function(h) FindFD(distm, h, fdelta))
+
         result.list <- lapply(fd.list, function(fd){
             FindClustersAuto(distm = distm, 
                              f = fd[['f']], 
