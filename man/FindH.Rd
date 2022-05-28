@@ -19,4 +19,3 @@ bandwidth h.
 \description{
 Find bandwidth h from the number of observations n and the dimension p.
 }
-

@@ -22,4 +22,3 @@ A wrapper of the dist() method, with the option to rescale the data with standar
 \author{
 Ethan Xu
 }
-

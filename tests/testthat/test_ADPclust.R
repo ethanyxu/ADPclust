@@ -34,7 +34,9 @@ test_that("ADPclust output", {
     
     ## More clustering tests with different parameter settings
     expect_error(adpclust(distm = clust3.distm), 
-                 "Bandwidth h and data x are not given. Must provide p to calculate h.", 
+                 "Data x are not given. Densities values f are not given. 
+                 You must provide the bandwidth h for the model to calculate f, 
+                 or provide dimension p so we can estimate h.", 
                  fixed = TRUE)       
     a <- adpclust(distm = clust3.distm, p = 2, ac = 2)
     expect_equal(IsSameClustering(a$clusters, clust3.clusters), TRUE)

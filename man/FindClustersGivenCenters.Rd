@@ -17,4 +17,3 @@ Cluster assignments. A vector of the same length as the number of observations.
 \description{
 Find cluster assignments from given centers and distance matrix. Each point is assigned to the center that has the shortest Euclidean distance.
 }
-

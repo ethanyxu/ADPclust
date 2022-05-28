@@ -29,4 +29,3 @@ Given f's and delta's, cluster centers are chosen to be the data points whose de
 \author{
 Ethan Xu
 }
-

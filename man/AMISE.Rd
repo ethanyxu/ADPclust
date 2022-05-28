@@ -20,4 +20,3 @@ Calculate the AMISE bandwidth from either a data frame, or from the number of ob
 \details{
 IMPORTANT NOTE: The standard deviation of each variable is omitted in this formula.
 }
-
